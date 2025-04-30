@@ -2,30 +2,26 @@
 
 // Removed unused imports: Link, Button, ArrowLeft, FloatingInputBar
 import React, { Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 // import { Button } from '@/components/ui/button';
 // import { ArrowLeft } from 'lucide-react';
 // import { FloatingInputBar } from '@/components/FloatingInputBar';
 
 // Keep dynamic import for ResultsDisplay
 const ResultsDisplay = React.lazy(() => import('./ResultsDisplay'));
-
-// Keep LoadingFallback
-function LoadingFallback() {
-  return (
-    <div className="w-full max-w-[800px] text-center py-10">
-      <p className="text-muted-foreground">Loading results...</p>
-    </div>
-  );
-}
+const ResultsDisplaySearchV2 = React.lazy(() => import('./ResultsDisplaySearchV2'));
 
 export default function ResultsPage() {
+  const searchParams = useSearchParams();
+  const query = searchParams.get('query') || '';
+
   return (
     <div className="relative min-h-screen">
       {/* Ensure main content has max-width and is centered */}
       <main className="flex flex-col items-center pb-32 px-4">
-        <div className="w-full max-w-3xl"> {/* Reverted max-width */} 
-          <Suspense fallback={<LoadingFallback />}>
-            <ResultsDisplay />
+        <div className="w-full max-w-[950px]"> {/* Increased max-width to 950px */} 
+          <Suspense>
+            {query === 'APPL' ? <ResultsDisplaySearchV2 /> : <ResultsDisplay />}
           </Suspense>
         </div>
       </main>
