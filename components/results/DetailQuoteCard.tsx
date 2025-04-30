@@ -1,7 +1,12 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 
-export default function DetailQuoteCard() {
+// Add props interface
+interface DetailQuoteCardProps {
+  title?: string;
+}
+
+export default function DetailQuoteCard({ title = "Detailed Quote" }: DetailQuoteCardProps) {
   // Table rows as an array for easier mapping and separator logic
   const rows = [
     ["Open", "176"],
@@ -23,7 +28,7 @@ export default function DetailQuoteCard() {
 
   return (
     <div className="rounded-xl border bg-card text-card-foreground shadow p-6 w-full flex flex-col h-full">
-      <div className="text-lg font-semibold mb-4">Detailed Quote</div>
+      <div className="text-lg font-semibold mb-4">{title}</div>
       <table className="w-full text-sm">
         <tbody>
           {rows.map(([label, value], idx) => (
@@ -40,12 +45,11 @@ export default function DetailQuoteCard() {
         </tbody>
       </table>
       <div className="flex-1" />
-      <div className="flex flex-col gap-3 mt-6">
+      <div className="flex flex-col gap-3 mt-6 items-start">
         {questions.slice(0, 3).map((q) => (
           <Button
             key={q}
-            variant="default"
-            className="w-full bg-teal-600 text-white rounded-md rounded-bl-none py-2 px-4 text-sm font-medium hover:bg-teal-700 transition-colors"
+            variant="conversational"
           >
             {q}
           </Button>

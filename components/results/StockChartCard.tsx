@@ -33,7 +33,12 @@ const volumeData = candleData.map((bar) => ({
   color: bar.close > bar.open ? '#26a69a' : '#ef5350',
 }));
 
-export default function StockChartCard() {
+// Add props interface
+interface StockChartCardProps {
+  title?: string;
+}
+
+export default function StockChartCard({ title = "Chart" }: StockChartCardProps) {
   const chartContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -78,7 +83,7 @@ export default function StockChartCard() {
 
   return (
     <div className="rounded-xl border bg-card text-card-foreground shadow p-6 w-full">
-      <div className="text-lg font-semibold mb-4">Default Symbol (AAPL)</div>
+      <div className="text-lg font-semibold mb-4">{title}</div>
       <div ref={chartContainerRef} className="w-full" style={{ minHeight: 320 }} />
       {/* Mock time range buttons */}
       <div className="flex gap-2 justify-center mt-4">
