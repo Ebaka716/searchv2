@@ -52,6 +52,12 @@ export default function Home() {
         >
           What news has affected me today?
         </Button>
+        <Button
+          variant="outline"
+          onClick={() => navigateToResults('APPL')}
+        >
+          APPL
+        </Button>
       </div>
     </main>
   );
