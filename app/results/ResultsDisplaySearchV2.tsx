@@ -3,7 +3,7 @@ import React from "react";
 import { Atom } from "lucide-react";
 import AppleSummaryCard from "@/components/results/AppleSummaryCard";
 import StackedButtonCard from "@/components/results/StackedButtonCard";
-import StockChartCard from "@/components/results/StockChartCard";
+import StockChartCard from "@/components/charts/StockChartCard";
 import DetailQuoteCard from "@/components/results/DetailQuoteCard";
 import MarketNewsCard from "@/components/results/MarketNewsCard";
 
@@ -17,8 +17,9 @@ export default function ResultsDisplaySearchV2() {
 
   if (isLoading) {
     return (
-      <div className="w-full pt-12 mt-6 flex flex-col items-center justify-center">
+      <div className="w-full pt-12 mt-6 flex flex-col items-center justify-center gap-4">
         <Atom className="h-12 w-12 text-primary animate-spin" />
+        <span className="text-lg text-muted-foreground">Loading results for "AAPL"</span>
       </div>
     );
   }

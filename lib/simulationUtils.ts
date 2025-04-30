@@ -84,4 +84,28 @@ export function getMyNewsData(): MyNewsData {
       { id: 'n2', text: "Analyze Recent Market Trends" },
     ]
   };
+}
+
+// Generate 120 days of mock candlestick data with realistic up/down swings
+export function generateMockCandles(numDays: number) {
+  const candles: { time: string; open: number; high: number; low: number; close: number }[] = [];
+  let lastClose = 100;
+  const lastDate = new Date('2024-01-01');
+  for (let i = 0; i < numDays; i++) {
+    // Simulate weekends (skip Sat/Sun)
+    while (lastDate.getDay() === 0 || lastDate.getDay() === 6) {
+      lastDate.setDate(lastDate.getDate() + 1);
+    }
+    const open = lastClose;
+    // Random walk for close
+    const change = (Math.random() - 0.5) * 4; // up to ±2
+    const close = Math.max(90, Math.min(110, open + change));
+    const high = Math.max(open, close) + Math.random() * 2;
+    const low = Math.min(open, close) - Math.random() * 2;
+    const time = lastDate.toISOString().slice(0, 10);
+    candles.push({ time, open: +open.toFixed(2), high: +high.toFixed(2), low: +low.toFixed(2), close: +close.toFixed(2) });
+    lastClose = close;
+    lastDate.setDate(lastDate.getDate() + 1);
+  }
+  return candles;
 } 
