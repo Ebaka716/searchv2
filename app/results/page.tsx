@@ -11,17 +11,24 @@ import { useSearchParams } from 'next/navigation';
 const ResultsDisplay = React.lazy(() => import('./ResultsDisplay'));
 const ResultsDisplaySearchV2 = React.lazy(() => import('./ResultsDisplaySearchV2'));
 
-export default function ResultsPage() {
+function ResultsPageContent() {
   const searchParams = useSearchParams();
   const query = searchParams.get('query') || '';
+  return (
+    <>
+      {query === 'APPL' ? <ResultsDisplaySearchV2 /> : <ResultsDisplay />}
+    </>
+  );
+}
 
+export default function ResultsPage() {
   return (
     <div className="relative min-h-screen">
       {/* Ensure main content has max-width and is centered */}
       <main className="flex flex-col items-center pb-32 px-4">
         <div className="w-full max-w-[950px]"> {/* Increased max-width to 950px */} 
           <Suspense>
-            {query === 'APPL' ? <ResultsDisplaySearchV2 /> : <ResultsDisplay />}
+            <ResultsPageContent />
           </Suspense>
         </div>
       </main>
