@@ -68,7 +68,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
               className={cn(pathname === '/' ? '' : "mb-6")}
             >
               <div className={cn(
-                "w-full max-w-[800px] mx-auto",
+                "w-full max-w-[950px] mx-auto",
                 pathname === '/' ? 'p-6' : ''
               )}>
                 {children}
