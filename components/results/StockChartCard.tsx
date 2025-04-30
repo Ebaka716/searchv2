@@ -3,9 +3,9 @@ import { createChart, ColorType, CandlestickSeries, HistogramSeries } from "ligh
 
 // Generate 120 days of mock candlestick data with realistic up/down swings
 function generateMockCandles(numDays: number) {
-  const candles = [];
+  const candles: { time: string; open: number; high: number; low: number; close: number }[] = [];
   let lastClose = 100;
-  let lastDate = new Date('2024-01-01');
+  const lastDate = new Date('2024-01-01');
   for (let i = 0; i < numDays; i++) {
     // Simulate weekends (skip Sat/Sun)
     while (lastDate.getDay() === 0 || lastDate.getDay() === 6) {
