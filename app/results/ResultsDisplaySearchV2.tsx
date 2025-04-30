@@ -36,15 +36,15 @@ export default function ResultsDisplaySearchV2() {
       {/* Cards Row */}
       <div className="flex items-start gap-6 w-full items-stretch">
         <AppleSummaryCard className="flex-[2]" />
-        <StackedButtonCard className="flex-[1]" />
+        <StackedButtonCard className="flex-[1]" title="Research topics" />
       </div>
       {/* Chart Row */}
       <div className="w-full">
-        <StockChartCard />
+        <StockChartCard title="Chart" />
       </div>
       {/* Detail Quote Row */}
       <div className="flex gap-6 w-full">
-        <div className="flex-1"><DetailQuoteCard /></div>
+        <div className="flex-1"><DetailQuoteCard title="Detailed quote" /></div>
         <div className="flex-1"><MarketNewsCard /></div>
       </div>
     </div>
