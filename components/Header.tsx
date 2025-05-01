@@ -1,7 +1,7 @@
 "use client";
 
-import React from 'react';
-import { usePathname } from 'next/navigation';
+import React, { useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
 import { Search, Sparkles, CircleUser } from 'lucide-react';
@@ -24,7 +24,8 @@ interface HeaderProps {
 
 export function Header({ className, ...props }: HeaderProps) {
   const pathname = usePathname();
-  const isConfidenceDemoPage = pathname === '/confidence-demo';
+  const router = useRouter();
+  const [headerInput, setHeaderInput] = useState("");
 
   // Always call the hook unconditionally at the top level
   const confidenceContext = useConfidence();
@@ -47,7 +48,7 @@ export function Header({ className, ...props }: HeaderProps) {
         {/* Logo */}
         <div className="flex items-center gap-2 font-semibold">
           <CircleUser className="h-6 w-6 text-blue-500" />
-          <span className="text-blue-500 font-bold text-xl">Product company</span>
+          <a href="/" className="text-blue-500 font-bold text-xl hover:underline">Product company</a>
         </div>
         {/* Utility Navigation */}
         <nav className="flex items-center gap-4 text-sm text-muted-foreground">
@@ -96,6 +97,13 @@ export function Header({ className, ...props }: HeaderProps) {
             </span>
             <Input
               placeholder="How can we help?"
+              value={headerInput}
+              onChange={e => setHeaderInput(e.target.value)}
+              onKeyDown={e => {
+                if (e.key === "Enter" && headerInput.trim()) {
+                  router.push(`/results?query=${encodeURIComponent(headerInput.trim())}`);
+                }
+              }}
               className="pl-8 pr-10 h-9 border border-gray-200 focus:border-gray-400"
             />
             <button type="button" className="absolute right-2 top-1/2 -translate-y-1/2 text-blue-500 hover:text-blue-600">
@@ -105,7 +113,7 @@ export function Header({ className, ...props }: HeaderProps) {
         </div>
       </div>
       {/* Confidence Slider (only on confidence demo page) */}
-      {isConfidenceDemoPage && (
+      {pathname === '/confidence-demo' && (
         <div className="container mx-auto flex items-center space-x-4 w-1/2 max-w-xs py-2">
           <Label htmlFor="confidence-slider" className="whitespace-nowrap text-sm font-medium">
             Confidence: {confidence}%

@@ -2,7 +2,7 @@ import React, { createContext, useContext, useRef } from 'react';
 
 // The context value is a ref to a function (or null)
 type ResultsQueryHandler = ((query: string) => void) | null;
-const ResultsQueryContext = createContext<React.MutableRefObject<ResultsQueryHandler>>(null as any);
+const ResultsQueryContext = createContext<React.MutableRefObject<ResultsQueryHandler> | null>(null);
 
 export function ResultsQueryProvider({ children }: { children: React.ReactNode }) {
   const handlerRef = useRef<ResultsQueryHandler>(null);

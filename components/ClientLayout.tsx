@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { Sidebar } from '@/components/Sidebar';
 import { cn } from '@/lib/utils';
 import { usePathname } from 'next/navigation';
@@ -19,8 +19,8 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   // Results history state (for results pages)
-  const [resultsHistory, setResultsHistory] = useState<any[]>([
-    { type: "aapl", query: "AAPL" }
+  const [resultsHistory, setResultsHistory] = useState<import('@/app/results/ResultsDisplaySearchV2').ResultsHistorySection[]>([
+    { type: "aapl", query: "AAPL", key: `aapl-AAPL-${Date.now()}` }
   ]);
 
   const toggleDesktopSidebar = () => {
@@ -47,12 +47,12 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
     if (query.trim().toLowerCase() === "show me my dividends for the last month") {
       setResultsHistory(prev => [
         ...prev,
-        { type: 'account-dividends', query }
+        { type: 'account-dividends', query, key: `account-dividends-${query}-${Date.now()}` }
       ]);
     } else {
       setResultsHistory(prev => [
         ...prev,
-        { type: 'query', query }
+        { type: 'query', query, key: `query-${query}-${Date.now()}` }
       ]);
     }
   };
@@ -88,19 +88,14 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
                 "w-full max-w-[950px] mx-auto",
                 pathname === '/' ? 'p-6' : ''
               )}>
-                {/* Inject resultsHistory and handler if child is ResultsDisplaySearchV2 */}
-                {React.Children.map(children, child => {
-                  if (
-                    React.isValidElement(child) &&
-                    child.type === ResultsDisplaySearchV2
-                  ) {
-                    return React.cloneElement(child, {
-                      history: resultsHistory,
-                      setHistory: setResultsHistory
-                    });
-                  }
-                  return child;
-                })}
+                {/* Render ResultsDisplaySearchV2 directly for /results route, else render children as-is */}
+                {pathname.startsWith('/results') ? (
+                  <Suspense>
+                    <ResultsDisplaySearchV2 history={resultsHistory} setHistory={setResultsHistory} />
+                  </Suspense>
+                ) : (
+                  children
+                )}
               </div>
             </main>
             

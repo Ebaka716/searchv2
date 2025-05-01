@@ -12,7 +12,26 @@ import { EarningsCardShadcn } from "@/components/results/EarningsCardShadcn";
 import { ClassicSearchResultsList } from "@/components/confidence-demo/ClassicSearchResultsList";
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 
-export default function ResultsDisplaySearchV2({ history, setHistory }: { history: any[]; setHistory: (fn: (prev: any[]) => any[]) => void }) {
+export type ResultsHistorySection =
+  | { type: "aapl"; query: string; key?: string }
+  | { type: "loading"; key: string; query?: string }
+  | { type: "dividends"; key?: string }
+  | { type: "query"; query: string; key?: string }
+  | { type: "account-dividends"; query: string; key?: string };
+
+interface ResultsDisplaySearchV2Props {
+  history: ResultsHistorySection[];
+  setHistory: React.Dispatch<React.SetStateAction<ResultsHistorySection[]>>;
+}
+
+// Module-level counter for unique keys
+let historyKeyCounter = 0;
+function getUniqueHistoryKey(prefix: string) {
+  historyKeyCounter += 1;
+  return `${prefix}-${Date.now()}-${historyKeyCounter}`;
+}
+
+export default function ResultsDisplaySearchV2({ history, setHistory }: ResultsDisplaySearchV2Props) {
   const searchParams = useSearchParams();
   const currentQuery = searchParams.get('query') || 'AAPL';
   const [isLoading, setIsLoading] = React.useState(true);
@@ -31,36 +50,36 @@ export default function ResultsDisplaySearchV2({ history, setHistory }: { histor
     if (
       currentQuery &&
       currentQuery !== 'AAPL' &&
-      !history.some(h => h.query === currentQuery)
+      !history.some(h => 'query' in h && h.query === currentQuery)
     ) {
       setLoadingSection(currentQuery);
       setHistory(prev => [
         ...prev,
-        { type: 'loading', key: `loading-query-${Date.now()}`, query: currentQuery }
+        { type: 'loading', key: getUniqueHistoryKey('loading-query'), query: currentQuery }
       ]);
       setTimeout(() => {
         setHistory(prev => {
           // Remove the last loading section and add the real section
           const withoutLoading = prev.filter(
-            section => section.type !== 'loading' || section.query !== currentQuery
+            section => section.type !== 'loading' || !('query' in section) || section.query !== currentQuery
           );
           // Special case for account-dividends
           if (currentQuery.trim().toLowerCase() === "show me my dividends for the last month") {
             return [
               ...withoutLoading,
-              { type: 'account-dividends', query: currentQuery }
+              { type: 'account-dividends', query: currentQuery, key: getUniqueHistoryKey('account-dividends') }
             ];
           }
           // Default: normal query
           return [
             ...withoutLoading,
-            { type: 'query', query: currentQuery }
+            { type: 'query', query: currentQuery, key: getUniqueHistoryKey('query') }
           ];
         });
         setLoadingSection(null);
       }, 1200);
     }
-  }, [currentQuery, history]);
+  }, [currentQuery, history, setHistory]);
 
   // Scroll to new result header
   React.useEffect(() => {
@@ -80,7 +99,7 @@ export default function ResultsDisplaySearchV2({ history, setHistory }: { histor
       setLoadingSection("dividends");
       setHistory((prev) => [
         ...prev,
-        { type: "loading", key: `loading-dividends-${Date.now()}` }
+        { type: "loading", key: getUniqueHistoryKey('loading-dividends') }
       ]);
       setTimeout(() => {
         setHistory((prev) => {
@@ -90,7 +109,7 @@ export default function ResultsDisplaySearchV2({ history, setHistory }: { histor
           );
           return [
             ...withoutLoading,
-            { type: "dividends" }
+            { type: "dividends", key: getUniqueHistoryKey('dividends') }
           ];
         });
         setLoadingSection(null);
@@ -110,7 +129,7 @@ export default function ResultsDisplaySearchV2({ history, setHistory }: { histor
   return (
     <div id="results-content">
       {history.map((section, idx) => (
-        <div key={section.key || section.query || idx} className="flex flex-col gap-6 p-6">
+        <div key={section.key} className="flex flex-col gap-6 p-6">
           {section.type === "aapl" && (
             <>
               <div className="flex flex-col mb-2" ref={el => { headerRefs.current[idx] = el; }}>
@@ -140,7 +159,7 @@ export default function ResultsDisplaySearchV2({ history, setHistory }: { histor
             <div className="w-full flex flex-col items-center justify-center gap-4 pt-8 pb-8">
               <Atom className="h-8 w-8 text-muted-foreground animate-spin" />
               <span className="text-lg text-muted-foreground">
-                {section.query
+                {'query' in section && section.query
                   ? `Loading results for: ${section.query}`
                   : loadingSection === 'dividends'
                     ? 'Loading results for: Dividends & Earnings'
@@ -155,7 +174,7 @@ export default function ResultsDisplaySearchV2({ history, setHistory }: { histor
                   <Atom className="h-5 w-5 text-muted-foreground flex-shrink-0" />
                   <span className="text-xl font-semibold">Dividends & Earnings for AAPL</span>
                 </div>
-                <span className="text-sm text-muted-foreground mt-1">Detailed analysis of Apple's dividend history and recent earnings performance.</span>
+                <span className="text-sm text-muted-foreground mt-1">Detailed analysis of Apple&apos;s dividend history and recent earnings performance.</span>
               </div>
               <div className="flex flex-col gap-6 w-full">
                 <DividendsCardShadcn />
@@ -164,21 +183,21 @@ export default function ResultsDisplaySearchV2({ history, setHistory }: { histor
               </div>
             </>
           )}
-          {section.type === "query" && section.query && (
+          {section.type === "query" && 'query' in section && section.query && (
             <>
               <div className="flex flex-col mb-2 mt-2" ref={el => { headerRefs.current[idx] = el; }} style={{ scrollMarginTop: 'calc(9rem + 12px)' }}>
                 <div className="flex items-center gap-2">
                   <Atom className="h-5 w-5 text-muted-foreground flex-shrink-0" />
                   <span className="text-xl font-semibold">{section.query}</span>
                 </div>
-                <span className="text-sm text-muted-foreground mt-1">Results tailored to your search for "{section.query}".</span>
+                <span className="text-sm text-muted-foreground mt-1">Results tailored to your search for &quot;{section.query}&quot;.</span>
               </div>
               <div className="rounded-xl border bg-muted p-8 text-center text-lg font-semibold text-muted-foreground">
                 Placeholder for &quot;{section.query}&quot; results
               </div>
             </>
           )}
-          {section.type === "account-dividends" && (
+          {section.type === "account-dividends" && 'query' in section && (
             <>
               <div className="flex flex-col mb-2 mt-2" ref={el => { headerRefs.current[idx] = el; }} style={{ scrollMarginTop: 'calc(9rem + 12px)' }}>
                 <div className="flex items-center gap-2">

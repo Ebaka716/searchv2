@@ -1,7 +1,7 @@
 "use client";
 
 // Removed unused imports: Link, Button, ArrowLeft, FloatingInputBar
-import React, { Suspense, useState } from 'react';
+import React, { Suspense, useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 // import { Button } from '@/components/ui/button';
 // import { ArrowLeft } from 'lucide-react';
@@ -10,11 +10,20 @@ import { useSearchParams } from 'next/navigation';
 // Keep dynamic import for ResultsDisplay
 const ResultsDisplay = React.lazy(() => import('./ResultsDisplay'));
 const ResultsDisplaySearchV2 = React.lazy(() => import('./ResultsDisplaySearchV2'));
+import type { ResultsHistorySection } from './ResultsDisplaySearchV2';
 
 function ResultsPageContent() {
   const searchParams = useSearchParams();
   const query = searchParams.get('query') || '';
-  const [resultsHistory, setResultsHistory] = useState([{ type: "aapl", query: "AAPL" }]);
+  const reset = searchParams.get('reset');
+  const [resultsHistory, setResultsHistory] = useState<ResultsHistorySection[]>([{ type: "aapl", query: "AAPL" }]);
+
+  useEffect(() => {
+    if (reset) {
+      setResultsHistory([{ type: "aapl", query: "AAPL", key: `aapl-AAPL-${Date.now()}` }]);
+    }
+  }, [reset]);
+
   return (
     <div style={{ paddingTop: 'calc(9rem + 12px)' }}>
       {query === 'AAPL' || query === 'APPL' ? (

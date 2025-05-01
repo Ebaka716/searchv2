@@ -101,7 +101,7 @@ export function Sidebar({
           {/* New Search Item with Tooltip (Conditional) */}
           <Tooltip>
             <TooltipTrigger asChild disabled={tooltipsDisabled}>
-              <Link href="/" passHref className="block"> 
+              <Link href="/assistant" passHref className="block"> 
                 <Button variant="ghost" className={cn("w-full justify-start", isDesktopCollapsed && "md:justify-center")}>
                   <Plus className="h-5 w-5 md:mr-2" />
                   <span className={cn(isDesktopCollapsed && "md:hidden")}>New Search</span> 

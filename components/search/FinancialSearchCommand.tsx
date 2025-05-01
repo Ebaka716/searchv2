@@ -71,7 +71,7 @@ export function FinancialSearchCommand() {
   }, {} as Record<string, SuggestionItem[]>);
 
   return (
-    <form onSubmit={handleFormSubmit} className="w-full max-w-xl mb-6">
+    <form onSubmit={handleFormSubmit} className="w-full max-w-3xl mb-6">
       <Command className="rounded-lg border shadow-md overflow-visible relative">
         <CommandInput
           placeholder="Search financial terms..."
