@@ -9,7 +9,6 @@ import { Header } from '@/components/Header';
 import { FloatingInputBar } from '@/components/FloatingInputBar';
 import { ConfidenceProvider } from '@/context/ConfidenceContext';
 import ResultsDisplaySearchV2 from '@/app/results/ResultsDisplaySearchV2';
-import ResultsDisplay from '@/app/results/ResultsDisplay';
 import type { ResultsHistorySection } from '@/app/results/ResultsDisplaySearchV2';
 
 export function ClientLayout({ children }: { children: React.ReactNode }) {

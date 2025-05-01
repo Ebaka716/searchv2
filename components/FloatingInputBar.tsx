@@ -39,13 +39,13 @@ const MAX_FILE_SIZE_MB = 5;
 const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
 
 export function FloatingInputBar({ onSpecialQuery, onSubmitQuery, hidden }: FloatingInputBarProps) {
-  if (hidden) return null;
   const router = useRouter();
   const [inputValue, setInputValue] = useState("");
   const [focusMode, setFocusMode] = useState("Learning Center");
   const [isFocused, setIsFocused] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  if (hidden) return null;
 
   // --- Helper function to get icon based on MIME type ---
   const getFileIcon = (mimeType: string) => {

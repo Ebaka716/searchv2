@@ -1,7 +1,7 @@
 # Active Context
 
-Current focus is on refining the results display for the AAPL icebreaker flow and improving the in-place, context-aware search experience. Recently, the Dividends and Earnings cards were redesigned using shadcn/ui and Recharts for a modern, consistent look. The Dividends card now features a responsive stat row, improved visualizations for strength, sustainability, and growth, and the Earnings card includes a bar chart, metrics table, and industry comparison. Extra placeholder cards were removed for clarity.
+The app now features a dedicated `/assistant` page for the Theta Assistant UI, which always starts with a fresh state. The home page (`/`) is now blank, serving as a landing or reset view. Navigation has been updated: clicking the 'Product company' text in the header routes to the blank home, while '+ New Search' in the sidebar routes to `/assistant` and resets all search histories. This ensures clear separation between starting a new search and viewing results.
 
-A new context-based communication pattern was explored to allow the global floating input bar to trigger in-place results updates (e.g., for queries like "dividends from last month"), but this was rolled back for stability. The current approach maintains a single global input bar, with results history managed locally in the results page.
+Recent changes also include robust key generation for results history, eliminating duplicate key errors, and improved state management for navigation between views.
 
-Next steps: further polish UI, expand feature documentation, improve test coverage, and revisit robust context-aware input handling if needed. 
+Next steps: further polish the assistant UI, expand documentation, and continue improving navigation and state handling patterns. 

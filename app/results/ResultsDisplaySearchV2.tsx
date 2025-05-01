@@ -49,7 +49,7 @@ export default function ResultsDisplaySearchV2({ history, setHistory, onLoading 
       if (onLoading) onLoading(false);
     }, 1500);
     return () => clearTimeout(timer);
-  }, []);
+  }, [onLoading]);
 
   // Listen for query changes and add to history if new
   React.useEffect(() => {

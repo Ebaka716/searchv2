@@ -7,4 +7,6 @@
 - API routes for backend logic
 - Tailwind CSS for styling
 - Markdown-based memory bank for documentation 
-- Pattern: Prefer local state for results history to avoid context/provider complexity unless robust cross-component communication is required 
+- Pattern: Prefer local state for results history to avoid context/provider complexity unless robust cross-component communication is required
+- Navigation pattern: Home page (`/`) is blank and serves as a reset/landing view. The `/assistant` page is dedicated to the Theta Assistant UI and always starts with a fresh state. Sidebar '+ New Search' routes to `/assistant`, header 'Product company' routes to home. All search histories are reset on navigation to either.
+- Robust key generation for results history ensures unique keys and prevents React reconciliation errors. 
