@@ -22,7 +22,7 @@ const metrics = [
 
 export function EarningsCardShadcn() {
   return (
-    <Card className="rounded-xl border bg-card mt-6">
+    <Card className="rounded-xl border bg-card">
       <CardHeader className="flex flex-row items-center justify-between pb-2">
         <CardTitle className="text-lg font-semibold">Earnings</CardTitle>
         <Button variant="ghost" size="sm" className="text-muted-foreground">More &rarr;</Button>

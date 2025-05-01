@@ -1,7 +1,7 @@
 "use client";
 
 // Removed unused imports: Link, Button, ArrowLeft, FloatingInputBar
-import React, { Suspense } from 'react';
+import React, { Suspense, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 // import { Button } from '@/components/ui/button';
 // import { ArrowLeft } from 'lucide-react';
@@ -14,9 +14,14 @@ const ResultsDisplaySearchV2 = React.lazy(() => import('./ResultsDisplaySearchV2
 function ResultsPageContent() {
   const searchParams = useSearchParams();
   const query = searchParams.get('query') || '';
+  const [resultsHistory, setResultsHistory] = useState([{ type: "aapl", query: "AAPL" }]);
   return (
     <div style={{ paddingTop: 'calc(9rem + 12px)' }}>
-      {query === 'AAPL' || query === 'APPL' ? <ResultsDisplaySearchV2 /> : <ResultsDisplay />}
+      {query === 'AAPL' || query === 'APPL' ? (
+        <ResultsDisplaySearchV2 history={resultsHistory} setHistory={setResultsHistory} />
+      ) : (
+        <ResultsDisplay />
+      )}
     </div>
   );
 }

@@ -21,10 +21,10 @@ import {
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 
-// Remove Prop Interface again
-// interface FloatingInputBarProps {
-//   isDesktopCollapsed: boolean;
-// }
+interface FloatingInputBarProps {
+  onSpecialQuery?: (query: string) => void;
+  onSubmitQuery?: (query: string) => void;
+}
 
 // Define limits
 const MAX_FILES = 5;
@@ -37,7 +37,7 @@ const ALLOWED_TYPES = [
 const MAX_FILE_SIZE_MB = 5;
 const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
 
-export function FloatingInputBar(/* { isDesktopCollapsed } */) {
+export function FloatingInputBar({ onSpecialQuery, onSubmitQuery }: FloatingInputBarProps) {
   const router = useRouter();
   const [inputValue, setInputValue] = useState("");
   const [focusMode, setFocusMode] = useState("Learning Center");
@@ -63,6 +63,30 @@ export function FloatingInputBar(/* { isDesktopCollapsed } */) {
     if (!inputValue && selectedFiles.length === 0) { 
       console.warn("Submit attempt with no input or file.");
       return; 
+    }
+
+    // If onSubmitQuery is provided, use it for all queries
+    if (onSubmitQuery) {
+      onSubmitQuery(inputValue);
+      setInputValue("");
+      setSelectedFiles([]); 
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ""; 
+      }
+      return;
+    }
+
+    // Special case: handle account-dividends query (legacy, fallback)
+    if (inputValue.trim().toLowerCase() === "show me my dividends for the last month") {
+      if (onSpecialQuery) {
+        onSpecialQuery(inputValue);
+      }
+      setInputValue("");
+      setSelectedFiles([]); 
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ""; 
+      }
+      return;
     }
 
     // Construct the query - Include file type if applicable

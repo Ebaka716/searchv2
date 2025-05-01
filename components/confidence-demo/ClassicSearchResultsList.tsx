@@ -3,21 +3,35 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface ClassicSearchResultsListProps {
   maxItems?: number; // Optional prop to limit items shown
+  context?: "aapl" | "dividends";
 }
 
-const placeholderLinks = [
-  { url: "#", title: "HSA Contribution Limits for 2024 - IRS", snippet: "Official IRS guidelines for maximum Health Savings Account contributions for individuals and families in 2024." },
-  { url: "#", title: "What are Qualified Medical Expenses for an HSA?", snippet: "Learn about the types of medical expenses you can pay for tax-free using your HSA funds." },
-  { url: "#", title: "Best HSA Providers Compared - NerdWallet", snippet: "A comparison of top HSA providers based on fees, investment options, and usability." },
-  { url: "#", title: "Using Your HSA for Retirement Savings", snippet: "Explore the triple tax advantages of HSAs and how they can supplement your retirement strategy." },
-  { url: "#", title: "HSA Eligibility Requirements", snippet: "Find out if you qualify for an HSA based on your health insurance plan (HDHP) and other factors." },
-  { url: "#", title: "Investing HSA Funds: A Beginner's Guide", snippet: "Understand the basics of investing your HSA money for potential long-term growth." },
-  { url: "#", title: "HSA vs. FSA: Key Differences Explained", snippet: "Compare Health Savings Accounts (HSAs) and Flexible Spending Accounts (FSAs) to see which is right for you." },
-  { url: "#", title: "How to Open an HSA Account", snippet: "Step-by-step guide on opening an HSA, choosing a provider, and making initial contributions." },
-];
+function getPlaceholderLinks(context: "aapl" | "dividends" = "aapl") {
+  if (context === "dividends") {
+    return [
+      { url: "#", title: "Apple Dividend History & Growth", snippet: "Explore Apple Inc.'s dividend payments, yield, and growth trends over the past decade." },
+      { url: "#", title: "AAPL Earnings: Recent Surprises", snippet: "A look at Apple's recent earnings reports and how they compare to analyst expectations." },
+      { url: "#", title: "Dividend Sustainability for Apple", snippet: "Analysis of Apple's payout ratio and the sustainability of its dividend policy." },
+      { url: "#", title: "How Does Apple's Dividend Compare?", snippet: "Comparing Apple's dividend yield and growth to other major tech companies." },
+      { url: "#", title: "AAPL Quarterly Earnings Breakdown", snippet: "Detailed breakdown of Apple's quarterly earnings, revenue sources, and profit margins." },
+      { url: "#", title: "Should You Buy Apple for the Dividend?", snippet: "Pros and cons of investing in AAPL for its dividend, including risk factors and growth potential." },
+      { url: "#", title: "Apple's Dividend Announcements Timeline", snippet: "Timeline of Apple's dividend announcements and key dates for investors." },
+    ];
+  }
+  // Default: 'aapl'
+  return [
+    { url: "#", title: "Apple Q2 2024 Earnings: Key Takeaways", snippet: "A summary of Apple Inc.'s latest quarterly earnings report, including revenue, profit, and product highlights." },
+    { url: "#", title: "AAPL Stock Analysis & Forecast", snippet: "Expert analysis and future outlook for Apple (AAPL) shares based on recent market trends and company performance." },
+    { url: "#", title: "Apple Announces New Product Lineup", snippet: "Coverage of Apple's most recent product announcements and their potential impact on the company's growth." },
+    { url: "#", title: "Dividend History for Apple Inc.", snippet: "A look at Apple's dividend payments, yield, and sustainability over the past decade." },
+    { url: "#", title: "How Does AAPL Compare to Tech Peers?", snippet: "Comparative analysis of Apple versus other major technology companies in terms of valuation, growth, and innovation." },
+    { url: "#", title: "Apple's Services Revenue Hits Record High", snippet: "Insights into the growth of Apple's services segment and what it means for the company's business model." },
+    { url: "#", title: "Should You Buy AAPL Now?", snippet: "Pros and cons of investing in Apple stock at current prices, including analyst recommendations and risk factors." },
+  ];
+}
 
-export function ClassicSearchResultsList({ maxItems }: ClassicSearchResultsListProps) {
-  const itemsToShow = maxItems ? placeholderLinks.slice(0, maxItems) : placeholderLinks;
+export function ClassicSearchResultsList({ maxItems, context = "aapl" }: ClassicSearchResultsListProps) {
+  const itemsToShow = maxItems ? getPlaceholderLinks(context).slice(0, maxItems) : getPlaceholderLinks(context);
 
   return (
     <Card>
@@ -35,7 +49,7 @@ export function ClassicSearchResultsList({ maxItems }: ClassicSearchResultsListP
             </li>
           ))}
         </ul>
-        {maxItems && maxItems < placeholderLinks.length && (
+        {maxItems && maxItems < getPlaceholderLinks(context).length && (
           <p className="text-sm text-muted-foreground mt-3">...</p>
         )}
       </CardContent>

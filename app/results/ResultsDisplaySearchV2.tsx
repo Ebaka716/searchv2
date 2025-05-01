@@ -9,13 +9,12 @@ import MarketNewsCard from "@/components/results/MarketNewsCard";
 import { useSearchParams } from 'next/navigation';
 import { DividendsCardShadcn } from "@/components/results/DividendsCardShadcn";
 import { EarningsCardShadcn } from "@/components/results/EarningsCardShadcn";
+import { ClassicSearchResultsList } from "@/components/confidence-demo/ClassicSearchResultsList";
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
 
-export default function ResultsDisplaySearchV2() {
+export default function ResultsDisplaySearchV2({ history, setHistory }: { history: any[]; setHistory: (fn: (prev: any[]) => any[]) => void }) {
   const searchParams = useSearchParams();
   const currentQuery = searchParams.get('query') || 'AAPL';
-  const [history, setHistory] = React.useState<({ type: string; key?: string; query?: string })[]>([
-    { type: "aapl", query: "AAPL" }
-  ]);
   const [isLoading, setIsLoading] = React.useState(true);
   const [loadingSection, setLoadingSection] = React.useState<null | string>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
@@ -45,6 +44,14 @@ export default function ResultsDisplaySearchV2() {
           const withoutLoading = prev.filter(
             section => section.type !== 'loading' || section.query !== currentQuery
           );
+          // Special case for account-dividends
+          if (currentQuery.trim().toLowerCase() === "show me my dividends for the last month") {
+            return [
+              ...withoutLoading,
+              { type: 'account-dividends', query: currentQuery }
+            ];
+          }
+          // Default: normal query
           return [
             ...withoutLoading,
             { type: 'query', query: currentQuery }
@@ -106,20 +113,26 @@ export default function ResultsDisplaySearchV2() {
         <div key={section.key || section.query || idx} className="flex flex-col gap-6 p-6">
           {section.type === "aapl" && (
             <>
-              <div className="flex items-center gap-2 mb-2" ref={el => { headerRefs.current[idx] = el; }}>
-                <Atom className="h-5 w-5 text-muted-foreground flex-shrink-0" />
-                <span className="text-xl font-semibold">AAPL</span>
+              <div className="flex flex-col mb-2" ref={el => { headerRefs.current[idx] = el; }}>
+                <div className="flex items-center gap-2">
+                  <Atom className="h-5 w-5 text-muted-foreground flex-shrink-0" />
+                  <span className="text-xl font-semibold">AAPL</span>
+                </div>
+                <span className="text-sm text-muted-foreground mt-1">A quick overview and key insights for Apple Inc. (AAPL) based on your selection.</span>
               </div>
-              <div className="flex items-start gap-6 w-full items-stretch">
-                <AppleSummaryCard className="flex-[2]" />
-                <StackedButtonCard className="flex-[1]" title="Research topics" onAction={handleAction} />
-              </div>
-              <div className="w-full">
-                <StockChartCard />
-              </div>
-              <div className="flex gap-6 w-full">
-                <div className="flex-1"><DetailQuoteCard title="Detailed quote" /></div>
-                <div className="flex-1"><MarketNewsCard /></div>
+              <div className="flex flex-col gap-6 w-full">
+                <div className="flex items-start gap-6 w-full items-stretch">
+                  <AppleSummaryCard className="flex-[2]" />
+                  <StackedButtonCard className="flex-[1]" title="Research topics" onAction={handleAction} />
+                </div>
+                <div className="w-full">
+                  <StockChartCard />
+                </div>
+                <div className="flex gap-6 w-full">
+                  <div className="flex-1"><DetailQuoteCard title="Detailed quote" /></div>
+                  <div className="flex-1"><MarketNewsCard /></div>
+                </div>
+                <ClassicSearchResultsList maxItems={7} context="aapl" />
               </div>
             </>
           )}
@@ -137,24 +150,74 @@ export default function ResultsDisplaySearchV2() {
           )}
           {section.type === "dividends" && (
             <>
-              <div className="flex items-center gap-2 mb-2 mt-2" ref={el => { headerRefs.current[idx] = el; }} style={{ scrollMarginTop: 'calc(9rem + 12px)' }}>
-                <Atom className="h-5 w-5 text-muted-foreground flex-shrink-0" />
-                <span className="text-xl font-semibold">Dividends & Earnings for AAPL</span>
+              <div className="flex flex-col mb-2 mt-2" ref={el => { headerRefs.current[idx] = el; }} style={{ scrollMarginTop: 'calc(9rem + 12px)' }}>
+                <div className="flex items-center gap-2">
+                  <Atom className="h-5 w-5 text-muted-foreground flex-shrink-0" />
+                  <span className="text-xl font-semibold">Dividends & Earnings for AAPL</span>
+                </div>
+                <span className="text-sm text-muted-foreground mt-1">Detailed analysis of Apple's dividend history and recent earnings performance.</span>
               </div>
-              <div className="w-full">
+              <div className="flex flex-col gap-6 w-full">
                 <DividendsCardShadcn />
                 <EarningsCardShadcn />
+                <ClassicSearchResultsList maxItems={7} context="dividends" />
               </div>
             </>
           )}
           {section.type === "query" && section.query && (
             <>
-              <div className="flex items-center gap-2 mb-2 mt-2" ref={el => { headerRefs.current[idx] = el; }} style={{ scrollMarginTop: 'calc(9rem + 12px)' }}>
-                <Atom className="h-5 w-5 text-muted-foreground flex-shrink-0" />
-                <span className="text-xl font-semibold">{section.query}</span>
+              <div className="flex flex-col mb-2 mt-2" ref={el => { headerRefs.current[idx] = el; }} style={{ scrollMarginTop: 'calc(9rem + 12px)' }}>
+                <div className="flex items-center gap-2">
+                  <Atom className="h-5 w-5 text-muted-foreground flex-shrink-0" />
+                  <span className="text-xl font-semibold">{section.query}</span>
+                </div>
+                <span className="text-sm text-muted-foreground mt-1">Results tailored to your search for "{section.query}".</span>
               </div>
               <div className="rounded-xl border bg-muted p-8 text-center text-lg font-semibold text-muted-foreground">
                 Placeholder for &quot;{section.query}&quot; results
+              </div>
+            </>
+          )}
+          {section.type === "account-dividends" && (
+            <>
+              <div className="flex flex-col mb-2 mt-2" ref={el => { headerRefs.current[idx] = el; }} style={{ scrollMarginTop: 'calc(9rem + 12px)' }}>
+                <div className="flex items-center gap-2">
+                  <Atom className="h-5 w-5 text-muted-foreground flex-shrink-0" />
+                  <span className="text-xl font-semibold">show me my dividends for the last month</span>
+                </div>
+                <span className="text-sm text-muted-foreground mt-1">Here are your dividend payouts for the last month, based on your account data.</span>
+              </div>
+              <div className="w-full">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Date</TableHead>
+                      <TableHead>Ticker</TableHead>
+                      <TableHead>Amount</TableHead>
+                      <TableHead>Account</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell>2024-06-01</TableCell>
+                      <TableCell>AAPL</TableCell>
+                      <TableCell>$12.50</TableCell>
+                      <TableCell>Brokerage</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>2024-06-10</TableCell>
+                      <TableCell>MSFT</TableCell>
+                      <TableCell>$8.20</TableCell>
+                      <TableCell>IRA</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell>2024-06-15</TableCell>
+                      <TableCell>VTI</TableCell>
+                      <TableCell>$5.00</TableCell>
+                      <TableCell>Brokerage</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
               </div>
             </>
           )}

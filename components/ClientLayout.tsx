@@ -8,6 +8,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { Header } from '@/components/Header';
 import { FloatingInputBar } from '@/components/FloatingInputBar';
 import { ConfidenceProvider } from '@/context/ConfidenceContext';
+import ResultsDisplaySearchV2 from '@/app/results/ResultsDisplaySearchV2';
 
 export function ClientLayout({ children }: { children: React.ReactNode }) {
   // --- Desktop Sidebar State ---
@@ -16,6 +17,11 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
   const pathname = usePathname();
+
+  // Results history state (for results pages)
+  const [resultsHistory, setResultsHistory] = useState<any[]>([
+    { type: "aapl", query: "AAPL" }
+  ]);
 
   const toggleDesktopSidebar = () => {
     setIsDesktopCollapsed(!isDesktopCollapsed);
@@ -35,6 +41,21 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
   const backgroundClass = isContentPage 
     ? "bg-[#F9F7F5] dark:bg-neutral-900" 
     : "bg-background"; // Default background
+
+  // Handler for the global input bar
+  const handleGlobalQuery = (query: string) => {
+    if (query.trim().toLowerCase() === "show me my dividends for the last month") {
+      setResultsHistory(prev => [
+        ...prev,
+        { type: 'account-dividends', query }
+      ]);
+    } else {
+      setResultsHistory(prev => [
+        ...prev,
+        { type: 'query', query }
+      ]);
+    }
+  };
 
   return (
     <TooltipProvider>
@@ -67,12 +88,24 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
                 "w-full max-w-[950px] mx-auto",
                 pathname === '/' ? 'p-6' : ''
               )}>
-                {children}
+                {/* Inject resultsHistory and handler if child is ResultsDisplaySearchV2 */}
+                {React.Children.map(children, child => {
+                  if (
+                    React.isValidElement(child) &&
+                    child.type === ResultsDisplaySearchV2
+                  ) {
+                    return React.cloneElement(child, {
+                      history: resultsHistory,
+                      setHistory: setResultsHistory
+                    });
+                  }
+                  return child;
+                })}
               </div>
             </main>
             
             {isContentPage && (
-              <FloatingInputBar /> 
+              <FloatingInputBar onSubmitQuery={handleGlobalQuery} /> 
             )}
           </div>
         </div>
