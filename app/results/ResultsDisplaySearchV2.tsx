@@ -7,11 +7,8 @@ import StockChartCard from "@/components/charts/StockChartCard";
 import DetailQuoteCard from "@/components/results/DetailQuoteCard";
 import MarketNewsCard from "@/components/results/MarketNewsCard";
 import { useSearchParams } from 'next/navigation';
-import dynamic from "next/dynamic";
 import { DividendsCardShadcn } from "@/components/results/DividendsCardShadcn";
 import { EarningsCardShadcn } from "@/components/results/EarningsCardShadcn";
-
-const DividendsCard = dynamic(() => import("@/components/results/DividendsCard").then(mod => mod.DividendsCard), { ssr: false });
 
 export default function ResultsDisplaySearchV2() {
   const searchParams = useSearchParams();

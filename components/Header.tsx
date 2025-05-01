@@ -2,17 +2,11 @@
 
 import React from 'react';
 import { usePathname } from 'next/navigation';
-import { Button } from '@/components/ui/button';
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
-import { Menu, CircleUser, Search, Sparkles } from 'lucide-react';
+import { Search, Sparkles, CircleUser } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useConfidence } from '@/context/ConfidenceContext';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import {
   NavigationMenu,
   NavigationMenuList,
@@ -24,12 +18,11 @@ import {
 import { Input } from '@/components/ui/input';
 
 interface HeaderProps {
-  toggleMobileMenu: () => void;
   className?: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
-export function Header({ toggleMobileMenu, className, ...props }: HeaderProps) {
+export function Header({ className, ...props }: HeaderProps) {
   const pathname = usePathname();
   const isConfidenceDemoPage = pathname === '/confidence-demo';
 
@@ -38,13 +31,16 @@ export function Header({ toggleMobileMenu, className, ...props }: HeaderProps) {
   // Destructure only if the context is available (it should be, thanks to the Provider)
   const { confidence, setConfidence } = confidenceContext || { confidence: 0, setConfidence: () => {} };
 
+  // Only allow valid DOM props to be spread
+  const { toggleMobileMenu, ...restProps } = props; // eslint-disable-line @typescript-eslint/no-unused-vars
+
   return (
     <header
       className={cn(
         "w-full border-b bg-background fixed top-0 left-0 right-0 z-50",
         className
       )}
-      {...props}
+      {...restProps}
     >
       {/* Top Row */}
       <div className="flex items-center justify-between px-4 h-18">
