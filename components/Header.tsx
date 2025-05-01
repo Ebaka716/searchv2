@@ -119,7 +119,7 @@ export function Header({ className, onSubmitQuery, resetSignal, onLogoClick, ...
               className="pl-8 pr-10 h-9 border border-gray-200 focus:border-gray-400"
             />
             <button type="button" className="absolute right-2 top-1/2 -translate-y-1/2 text-blue-500 hover:text-blue-600">
-              <Sparkles className="h-5 w-5" />
+              <img src="/sparkle.png" alt="Sparkle" width={20} height={20} className="h-5 w-5" />
             </button>
           </div>
         </div>
