@@ -19,7 +19,7 @@ export default function ResultsDisplaySearchV2() {
     return (
       <div className="w-full pt-12 mt-6 flex flex-col items-center justify-center gap-4">
         <Atom className="h-12 w-12 text-primary animate-spin" />
-        <span className="text-lg text-muted-foreground">Loading results for "AAPL"</span>
+        <span className="text-lg text-muted-foreground">Loading results for &quot;AAPL&quot;</span>
       </div>
     );
   }
@@ -40,7 +40,7 @@ export default function ResultsDisplaySearchV2() {
       </div>
       {/* Chart Row */}
       <div className="w-full">
-        <StockChartCard title="Chart" />
+        <StockChartCard />
       </div>
       {/* Detail Quote Row */}
       <div className="flex gap-6 w-full">
