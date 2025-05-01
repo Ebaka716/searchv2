@@ -9,6 +9,7 @@ import { Header } from '@/components/Header';
 import { FloatingInputBar } from '@/components/FloatingInputBar';
 import { ConfidenceProvider } from '@/context/ConfidenceContext';
 import ResultsDisplaySearchV2 from '@/app/results/ResultsDisplaySearchV2';
+import ResultsDisplay from '@/app/results/ResultsDisplay';
 
 export function ClientLayout({ children }: { children: React.ReactNode }) {
   // --- Desktop Sidebar State ---
@@ -22,6 +23,9 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
   const [resultsHistory, setResultsHistory] = useState<import('@/app/results/ResultsDisplaySearchV2').ResultsHistorySection[]>([
     { type: "aapl", query: "AAPL", key: `aapl-AAPL-${Date.now()}` }
   ]);
+
+  // Add a new state to track loading
+  const [isResultsLoading, setIsResultsLoading] = useState(false);
 
   const toggleDesktopSidebar = () => {
     setIsDesktopCollapsed(!isDesktopCollapsed);
@@ -44,6 +48,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
 
   // Handler for the global input bar
   const handleGlobalQuery = (query: string) => {
+    setIsResultsLoading(true); // Set loading true on new query
     if (query.trim().toLowerCase() === "show me my dividends for the last month") {
       setResultsHistory(prev => [
         ...prev,
@@ -55,6 +60,11 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
         { type: 'query', query, key: `query-${query}-${Date.now()}` }
       ]);
     }
+  };
+
+  // Callback to update loading state from children
+  const handleResultsLoading = (loading: boolean) => {
+    setIsResultsLoading(loading);
   };
 
   return (
@@ -91,7 +101,11 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
                 {/* Render ResultsDisplaySearchV2 directly for /results route, else render children as-is */}
                 {pathname.startsWith('/results') ? (
                   <Suspense>
-                    <ResultsDisplaySearchV2 history={resultsHistory} setHistory={setResultsHistory} />
+                    <ResultsDisplaySearchV2 
+                      history={resultsHistory} 
+                      setHistory={setResultsHistory} 
+                      onLoading={handleResultsLoading}
+                    />
                   </Suspense>
                 ) : (
                   children
@@ -100,7 +114,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
             </main>
             
             {isContentPage && (
-              <FloatingInputBar onSubmitQuery={handleGlobalQuery} /> 
+              <FloatingInputBar onSubmitQuery={handleGlobalQuery} hidden={isResultsLoading} /> 
             )}
           </div>
         </div>

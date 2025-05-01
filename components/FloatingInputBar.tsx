@@ -24,6 +24,7 @@ import { Badge } from "@/components/ui/badge";
 interface FloatingInputBarProps {
   onSpecialQuery?: (query: string) => void;
   onSubmitQuery?: (query: string) => void;
+  hidden?: boolean;
 }
 
 // Define limits
@@ -37,7 +38,8 @@ const ALLOWED_TYPES = [
 const MAX_FILE_SIZE_MB = 5;
 const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
 
-export function FloatingInputBar({ onSpecialQuery, onSubmitQuery }: FloatingInputBarProps) {
+export function FloatingInputBar({ onSpecialQuery, onSubmitQuery, hidden }: FloatingInputBarProps) {
+  if (hidden) return null;
   const router = useRouter();
   const [inputValue, setInputValue] = useState("");
   const [focusMode, setFocusMode] = useState("Learning Center");
@@ -186,9 +188,10 @@ export function FloatingInputBar({ onSpecialQuery, onSubmitQuery }: FloatingInpu
 
   return (
     <div className={cn(
-      "sticky bottom-0 mt-6 z-10"
+      "fixed left-0 right-0 bottom-0 mt-6 z-30",
+      "pointer-events-none"
     )}>
-      <div className="max-w-[800px] mx-auto pointer-events-auto">
+      <div className="max-w-[800px] mx-auto pointer-events-auto pb-4">
         <form
           onSubmit={handleFormSubmit}
           className="w-full"

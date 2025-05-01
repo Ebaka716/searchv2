@@ -22,6 +22,7 @@ export type ResultsHistorySection =
 interface ResultsDisplaySearchV2Props {
   history: ResultsHistorySection[];
   setHistory: React.Dispatch<React.SetStateAction<ResultsHistorySection[]>>;
+  onLoading?: (loading: boolean) => void;
 }
 
 // Module-level counter for unique keys
@@ -31,7 +32,7 @@ function getUniqueHistoryKey(prefix: string) {
   return `${prefix}-${Date.now()}-${historyKeyCounter}`;
 }
 
-export default function ResultsDisplaySearchV2({ history, setHistory }: ResultsDisplaySearchV2Props) {
+export default function ResultsDisplaySearchV2({ history, setHistory, onLoading }: ResultsDisplaySearchV2Props) {
   const searchParams = useSearchParams();
   const currentQuery = searchParams.get('query') || 'AAPL';
   const [isLoading, setIsLoading] = React.useState(true);
@@ -41,7 +42,11 @@ export default function ResultsDisplaySearchV2({ history, setHistory }: ResultsD
 
   // Initial AAPL loading
   React.useEffect(() => {
-    const timer = setTimeout(() => setIsLoading(false), 1500);
+    if (onLoading) onLoading(true);
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+      if (onLoading) onLoading(false);
+    }, 1500);
     return () => clearTimeout(timer);
   }, []);
 
@@ -57,6 +62,7 @@ export default function ResultsDisplaySearchV2({ history, setHistory }: ResultsD
         ...prev,
         { type: 'loading', key: getUniqueHistoryKey('loading-query'), query: currentQuery }
       ]);
+      if (onLoading) onLoading(true);
       setTimeout(() => {
         setHistory(prev => {
           // Remove the last loading section and add the real section
@@ -77,9 +83,10 @@ export default function ResultsDisplaySearchV2({ history, setHistory }: ResultsD
           ];
         });
         setLoadingSection(null);
+        if (onLoading) onLoading(false);
       }, 1200);
     }
-  }, [currentQuery, history, setHistory]);
+  }, [currentQuery, history, setHistory, onLoading]);
 
   // Scroll to new result header
   React.useEffect(() => {
@@ -101,6 +108,7 @@ export default function ResultsDisplaySearchV2({ history, setHistory }: ResultsD
         ...prev,
         { type: "loading", key: getUniqueHistoryKey('loading-dividends') }
       ]);
+      if (onLoading) onLoading(true);
       setTimeout(() => {
         setHistory((prev) => {
           // Remove the last loading section and add the real section
@@ -113,6 +121,7 @@ export default function ResultsDisplaySearchV2({ history, setHistory }: ResultsD
           ];
         });
         setLoadingSection(null);
+        if (onLoading) onLoading(false);
       }, 1200);
     }
   }
@@ -127,12 +136,12 @@ export default function ResultsDisplaySearchV2({ history, setHistory }: ResultsD
   }
 
   return (
-    <div id="results-content">
+    <div id="results-content" className="mt-24">
       {history.map((section, idx) => (
         <div key={section.key} className="flex flex-col gap-6 p-6">
           {section.type === "aapl" && (
             <>
-              <div className="flex flex-col mb-2" ref={el => { headerRefs.current[idx] = el; }}>
+              <div className="flex flex-col mb-2" ref={el => { headerRefs.current[idx] = el; }} style={{ scrollMarginTop: '144px' }}>
                 <div className="flex items-center gap-2">
                   <Atom className="h-5 w-5 text-muted-foreground flex-shrink-0" />
                   <span className="text-xl font-semibold">AAPL</span>
@@ -169,7 +178,7 @@ export default function ResultsDisplaySearchV2({ history, setHistory }: ResultsD
           )}
           {section.type === "dividends" && (
             <>
-              <div className="flex flex-col mb-2 mt-2" ref={el => { headerRefs.current[idx] = el; }} style={{ scrollMarginTop: 'calc(9rem + 12px)' }}>
+              <div className="flex flex-col mb-2 mt-2" ref={el => { headerRefs.current[idx] = el; }} style={{ scrollMarginTop: '144px' }}>
                 <div className="flex items-center gap-2">
                   <Atom className="h-5 w-5 text-muted-foreground flex-shrink-0" />
                   <span className="text-xl font-semibold">Dividends & Earnings for AAPL</span>
@@ -185,7 +194,7 @@ export default function ResultsDisplaySearchV2({ history, setHistory }: ResultsD
           )}
           {section.type === "query" && 'query' in section && section.query && (
             <>
-              <div className="flex flex-col mb-2 mt-2" ref={el => { headerRefs.current[idx] = el; }} style={{ scrollMarginTop: 'calc(9rem + 12px)' }}>
+              <div className="flex flex-col mb-2 mt-2" ref={el => { headerRefs.current[idx] = el; }} style={{ scrollMarginTop: '144px' }}>
                 <div className="flex items-center gap-2">
                   <Atom className="h-5 w-5 text-muted-foreground flex-shrink-0" />
                   <span className="text-xl font-semibold">{section.query}</span>
@@ -199,7 +208,7 @@ export default function ResultsDisplaySearchV2({ history, setHistory }: ResultsD
           )}
           {section.type === "account-dividends" && 'query' in section && (
             <>
-              <div className="flex flex-col mb-2 mt-2" ref={el => { headerRefs.current[idx] = el; }} style={{ scrollMarginTop: 'calc(9rem + 12px)' }}>
+              <div className="flex flex-col mb-2 mt-2" ref={el => { headerRefs.current[idx] = el; }} style={{ scrollMarginTop: '144px' }}>
                 <div className="flex items-center gap-2">
                   <Atom className="h-5 w-5 text-muted-foreground flex-shrink-0" />
                   <span className="text-xl font-semibold">show me my dividends for the last month</span>
