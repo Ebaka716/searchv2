@@ -249,8 +249,8 @@ export default function WordCountDemoPage() {
   };
 
   return (
-    <div className="w-full space-y-6 p-4">
-      <h1 className="text-3xl font-bold">Word Count Demo</h1>
+    <div className="p-4 space-y-6 pt-[7.5rem]">
+      <h1 className="text-xl font-semibold">Word Count Demo</h1>
 
       {/* Stepper using Tabs */}
       <Tabs value={currentStep} onValueChange={setCurrentStep} className="w-full">

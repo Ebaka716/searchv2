@@ -1,0 +1,3 @@
+# Active Context
+
+Current focus is on refining the results display for the AAPL icebreaker flow. Recently, the Dividends and Earnings cards were redesigned using shadcn/ui and Recharts for a modern, consistent look. The Dividends card now features a responsive stat row, improved visualizations for strength, sustainability, and growth, and the Earnings card includes a bar chart, metrics table, and industry comparison. Extra placeholder cards were removed for clarity. Next steps: further polish UI, expand feature documentation, and improve test coverage. 

@@ -15,9 +15,9 @@ function ResultsPageContent() {
   const searchParams = useSearchParams();
   const query = searchParams.get('query') || '';
   return (
-    <>
-      {query === 'APPL' ? <ResultsDisplaySearchV2 /> : <ResultsDisplay />}
-    </>
+    <div style={{ paddingTop: 'calc(9rem + 12px)' }}>
+      {query === 'AAPL' || query === 'APPL' ? <ResultsDisplaySearchV2 /> : <ResultsDisplay />}
+    </div>
   );
 }
 

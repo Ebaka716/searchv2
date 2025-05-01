@@ -1,0 +1,5 @@
+# Project Brief
+
+This project is a Next.js web application designed to provide interactive financial tools and demos, including stock data analysis, word count, and confidence estimation. It is structured for modularity, scalability, and maintainability, with a focus on clear documentation and reusable components. The project aims to serve as a robust foundation for building and demonstrating advanced financial and data-driven features.
+
+We are currently on iteration two of this prototype. The main focus is developing and refining the flow for the AAPL icebreaker feature, specifically what is shown in the results when the user presses the AAPL button (not the 'How's AAPL doing' button). This iteration is about perfecting the user experience and clarity of the results for this specific interaction. 

@@ -12,11 +12,13 @@ const actions = [
 interface StackedButtonCardProps {
   className?: string;
   title?: string;
+  onAction?: (action: string) => void;
 }
 
 export default function StackedButtonCard({
   className,
   title = "Quick Actions",
+  onAction,
 }: StackedButtonCardProps) {
   return (
     <div className={`rounded-xl border bg-card text-card-foreground shadow p-6 flex flex-col gap-4 ${className || ''}`}>
@@ -26,6 +28,7 @@ export default function StackedButtonCard({
           <Button
             key={action}
             variant="conversational"
+            onClick={() => onAction && onAction(action)}
           >
             {action}
           </Button>

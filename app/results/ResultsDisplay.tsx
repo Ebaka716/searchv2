@@ -530,6 +530,7 @@ export default function ResultsDisplay() {
                 <h2 
                   id={`title-${entry.id}`} 
                   className="text-xl font-semibold flex items-center gap-2"
+                  style={{ scrollMarginTop: 'calc(9rem + 12px)' }}
                 >
                   <Atom className="h-5 w-5 text-muted-foreground flex-shrink-0"/>
                   {displayQuery} {/* Display the extracted query */}

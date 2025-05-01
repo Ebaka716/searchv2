@@ -1,0 +1,3 @@
+# Product Context
+
+The application exists to offer users a suite of financial and analytical tools in a modern, web-based interface. It solves problems related to financial data visualization, user-driven analysis, and interactive demos for educational or product showcase purposes. The user experience is designed to be intuitive, responsive, and visually engaging, leveraging custom UI components and charts. 

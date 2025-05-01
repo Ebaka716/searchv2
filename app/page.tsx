@@ -54,9 +54,9 @@ export default function Home() {
         </Button>
         <Button
           variant="outline"
-          onClick={() => navigateToResults('APPL')}
+          onClick={() => navigateToResults('AAPL')}
         >
-          APPL
+          AAPL
         </Button>
       </div>
     </main>

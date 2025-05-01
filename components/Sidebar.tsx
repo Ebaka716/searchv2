@@ -41,8 +41,9 @@ export function Sidebar({
       {/* Sidebar Container - Adjust top and height */}
       <div
         className={cn(
-          "fixed left-0 top-16 bottom-0 z-40 h-[calc(100vh-4rem)]", // Start below header (h-16 = 4rem), fill remaining height
-          "bg-sidebar border-r border-sidebar-border flex flex-col", // Revert back to bg-sidebar
+          // Start below the new header height (4.5rem + 3.5rem = 7.5rem)
+          "fixed left-0 top-[7.5rem] bottom-0 z-40",
+          "bg-sidebar border-r border-sidebar-border flex flex-col",
           "transition-transform duration-300 ease-in-out md:transition-all", 
           "w-full", // <-- Add w-full as base width for mobile drawer
           // Mobile State:
@@ -53,7 +54,7 @@ export function Sidebar({
         )}
       >
         {/* Top Section: Close/Toggle Buttons */}
-        <div className="p-2 flex justify-end">
+        <div className="pt-6 px-2 pb-2 flex justify-end">
           {/* Mobile Close Button (Top right inside drawer) */}
           <Tooltip>
             <TooltipTrigger asChild>

@@ -30,8 +30,8 @@ export default function ConfidenceDemoPage() {
   }
 
   return (
-    <div className="space-y-4 p-4">
-      <h1 className="text-2xl font-semibold">User Query (HSA)</h1>
+    <div className="space-y-4 p-4 pt-[7.5rem]">
+      <h1 className="text-xl font-semibold">User Query (HSA)</h1>
       <p className="text-muted-foreground">
         Adjust the confidence slider in the header ({confidence}%) to see the results layout change.
       </p>
