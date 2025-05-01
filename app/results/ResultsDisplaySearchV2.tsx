@@ -1,6 +1,7 @@
 "use client";
 import React, { useRef } from "react";
 import { Atom } from "lucide-react";
+import Image from 'next/image';
 import AppleSummaryCard from "@/components/results/AppleSummaryCard";
 import StackedButtonCard from "@/components/results/StackedButtonCard";
 import StockChartCard from "@/components/charts/StockChartCard";
@@ -154,7 +155,7 @@ export default function ResultsDisplaySearchV2({ history, setHistory, onLoading 
             <>
               <div className="flex flex-col mb-2" ref={el => { headerRefs.current[idx] = el; }} style={{ scrollMarginTop: '144px' }}>
                 <div className="flex items-center gap-2">
-                  <img src="/sparkle.png" alt="Sparkle" width={20} height={20} className="h-5 w-5 text-muted-foreground flex-shrink-0" />
+                  <Image src="/sparkle.png" alt="Sparkle" width={20} height={20} className="h-5 w-5 text-muted-foreground flex-shrink-0" />
                   <span className="text-xl font-semibold">AAPL</span>
                 </div>
                 <span className="text-sm text-muted-foreground mt-1">A quick overview and key insights for Apple Inc. (AAPL) based on your selection.</span>
@@ -191,7 +192,7 @@ export default function ResultsDisplaySearchV2({ history, setHistory, onLoading 
             <>
               <div className="flex flex-col mb-2 mt-2" ref={el => { headerRefs.current[idx] = el; }} style={{ scrollMarginTop: '144px' }}>
                 <div className="flex items-center gap-2">
-                  <img src="/sparkle.png" alt="Sparkle" width={20} height={20} className="h-5 w-5 text-muted-foreground flex-shrink-0" />
+                  <Image src="/sparkle.png" alt="Sparkle" width={20} height={20} className="h-5 w-5 text-muted-foreground flex-shrink-0" />
                   <span className="text-xl font-semibold">Dividends & Earnings for AAPL</span>
                 </div>
                 <span className="text-sm text-muted-foreground mt-1">Detailed analysis of Apple&apos;s dividend history and recent earnings performance.</span>
@@ -212,7 +213,7 @@ export default function ResultsDisplaySearchV2({ history, setHistory, onLoading 
               <>
                 <div className="flex flex-col mb-2 mt-2" ref={el => { headerRefs.current[idx] = el; }} style={{ scrollMarginTop: '144px' }}>
                   <div className="flex items-center gap-2">
-                    <img src="/sparkle.png" alt="Sparkle" width={20} height={20} className="h-5 w-5 text-muted-foreground flex-shrink-0" />
+                    <Image src="/sparkle.png" alt="Sparkle" width={20} height={20} className="h-5 w-5 text-muted-foreground flex-shrink-0" />
                     <span className="text-xl font-semibold">{section.query}</span>
                   </div>
                   <span className="text-sm text-muted-foreground mt-1">Results tailored to your search for &quot;{section.query}&quot;.</span>
@@ -226,7 +227,7 @@ export default function ResultsDisplaySearchV2({ history, setHistory, onLoading 
             <>
               <div className="flex flex-col mb-2 mt-2" ref={el => { headerRefs.current[idx] = el; }} style={{ scrollMarginTop: '144px' }}>
                 <div className="flex items-center gap-2">
-                  <img src="/sparkle.png" alt="Sparkle" width={20} height={20} className="h-5 w-5 text-muted-foreground flex-shrink-0" />
+                  <Image src="/sparkle.png" alt="Sparkle" width={20} height={20} className="h-5 w-5 text-muted-foreground flex-shrink-0" />
                   <span className="text-xl font-semibold">show me my dividends for the last month</span>
                 </div>
                 <span className="text-sm text-muted-foreground mt-1">Here are your dividend payouts for the last month, based on your account data.</span>
@@ -275,7 +276,7 @@ export default function ResultsDisplaySearchV2({ history, setHistory, onLoading 
               <>
                 <div className="flex flex-col mb-2 mt-2" ref={el => { headerRefs.current[idx] = el; }} style={{ scrollMarginTop: '144px' }}>
                   <div className="flex items-center gap-2">
-                    <img src="/sparkle.png" alt="Sparkle" width={20} height={20} className="h-5 w-5 text-muted-foreground flex-shrink-0" />
+                    <Image src="/sparkle.png" alt="Sparkle" width={20} height={20} className="h-5 w-5 text-muted-foreground flex-shrink-0" />
                     <span className="text-xl font-semibold">{section.query}</span>
                   </div>
                   <span className="text-sm text-muted-foreground mt-1">Results tailored to your search for &quot;{section.query}&quot;.</span>

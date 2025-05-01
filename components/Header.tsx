@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
-import { Search, Sparkles, CircleUser } from 'lucide-react';
+import { Search, CircleUser } from 'lucide-react';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { useConfidence } from '@/context/ConfidenceContext';
@@ -17,6 +17,7 @@ import {
   NavigationMenuLink,
 } from '@/components/ui/navigation-menu';
 import { Input } from '@/components/ui/input';
+import Image from 'next/image';
 
 interface HeaderProps {
   className?: string;
@@ -119,7 +120,7 @@ export function Header({ className, onSubmitQuery, resetSignal, onLogoClick, ...
               className="pl-8 pr-10 h-9 border border-gray-200 focus:border-gray-400"
             />
             <button type="button" className="absolute right-2 top-1/2 -translate-y-1/2 text-blue-500 hover:text-blue-600">
-              <img src="/sparkle.png" alt="Sparkle" width={20} height={20} className="h-5 w-5" />
+              <Image src="/sparkle.png" alt="Sparkle" width={20} height={20} className="h-5 w-5" />
             </button>
           </div>
         </div>
