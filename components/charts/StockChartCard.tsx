@@ -83,7 +83,7 @@ const StockChartCard: FC<StockChartCardProps> = ({
     candlestickSeries.setData(candleData);
     chart.timeScale().fitContent();
     return () => chart.remove();
-  }, []);
+  }, [candleData, volumeData]);
 
   return (
     <Card className="w-full">

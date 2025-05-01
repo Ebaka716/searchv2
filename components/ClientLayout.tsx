@@ -21,10 +21,6 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
     setIsDesktopCollapsed(!isDesktopCollapsed);
   };
 
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen);
-  };
-  
   // Close mobile menu on path change (optional but good UX)
   useEffect(() => {
       setIsMobileMenuOpen(false);
