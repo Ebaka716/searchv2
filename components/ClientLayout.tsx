@@ -3,13 +3,14 @@
 import React, { useState, useEffect, Suspense } from 'react';
 import { Sidebar } from '@/components/Sidebar';
 import { cn } from '@/lib/utils';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Header } from '@/components/Header';
 import { FloatingInputBar } from '@/components/FloatingInputBar';
 import { ConfidenceProvider } from '@/context/ConfidenceContext';
 import ResultsDisplaySearchV2 from '@/app/results/ResultsDisplaySearchV2';
 import ResultsDisplay from '@/app/results/ResultsDisplay';
+import type { ResultsHistorySection } from '@/app/results/ResultsDisplaySearchV2';
 
 export function ClientLayout({ children }: { children: React.ReactNode }) {
   // --- Desktop Sidebar State ---
@@ -18,14 +19,18 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   
   const pathname = usePathname();
+  const router = useRouter();
 
   // Results history state (for results pages)
-  const [resultsHistory, setResultsHistory] = useState<import('@/app/results/ResultsDisplaySearchV2').ResultsHistorySection[]>([
+  const [resultsHistory, setResultsHistory] = useState<ResultsHistorySection[]>([
     { type: "aapl", query: "AAPL", key: `aapl-AAPL-${Date.now()}` }
   ]);
 
   // Add a new state to track loading
   const [isResultsLoading, setIsResultsLoading] = useState(false);
+
+  const [headerResetSignal, setHeaderResetSignal] = useState(0);
+  const handleHeaderReset = () => setHeaderResetSignal(s => s + 1);
 
   const toggleDesktopSidebar = () => {
     setIsDesktopCollapsed(!isDesktopCollapsed);
@@ -46,20 +51,45 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
     ? "bg-[#F9F7F5] dark:bg-neutral-900" 
     : "bg-background"; // Default background
 
-  // Handler for the global input bar
-  const handleGlobalQuery = (query: string) => {
-    setIsResultsLoading(true); // Set loading true on new query
-    if (query.trim().toLowerCase() === "show me my dividends for the last month") {
-      setResultsHistory(prev => [
-        ...prev,
-        { type: 'account-dividends', query, key: `account-dividends-${query}-${Date.now()}` }
-      ]);
-    } else {
-      setResultsHistory(prev => [
-        ...prev,
-        { type: 'query', query, key: `query-${query}-${Date.now()}` }
-      ]);
+  // Helper to create the correct history entry type
+  const makeHistoryEntry = (query: string): ResultsHistorySection => {
+    if (query.trim().toUpperCase() === "AAPL") {
+      return { type: "aapl", query: "AAPL", key: `aapl-AAPL-${Date.now()}` };
     }
+    if (query.trim().toLowerCase() === "show me my dividends for the last month") {
+      return { type: 'account-dividends', query, key: `account-dividends-${query}-${Date.now()}` };
+    }
+    return { type: 'query', query, key: `query-${query}-${Date.now()}` };
+  };
+
+  // Handler for header input (reset history)
+  const handleResetQuery = (query: string) => {
+    setIsResultsLoading(true);
+    setResultsHistory([makeHistoryEntry(query)]);
+    router.push(`/results?query=${encodeURIComponent(query)}`);
+  };
+
+  // Handler for floating input bar (append to history)
+  const handleAppendQuery = (query: string) => {
+    setIsResultsLoading(true);
+    const loadingKey = `loading-${query}-${Date.now()}`;
+    setResultsHistory(prev => [
+      ...prev,
+      { type: 'loading', key: loadingKey, query },
+    ]);
+    setTimeout(() => {
+      setResultsHistory(prev => {
+        // Remove the last loading section and add the real section
+        const withoutLoading = prev.filter(
+          section => section.type !== 'loading' || section.key !== loadingKey
+        );
+        return [
+          ...withoutLoading,
+          makeHistoryEntry(query)
+        ];
+      });
+      setIsResultsLoading(false);
+    }, 1200);
   };
 
   // Callback to update loading state from children
@@ -70,7 +100,12 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
   return (
     <TooltipProvider>
       <ConfidenceProvider>
-        <Header toggleMobileMenu={() => setIsMobileMenuOpen(true)} />
+        <Header 
+          toggleMobileMenu={() => setIsMobileMenuOpen(true)} 
+          onSubmitQuery={handleResetQuery} 
+          resetSignal={headerResetSignal}
+          onLogoClick={handleHeaderReset}
+        />
         
         <div className={cn("flex h-screen")}>
           <Sidebar 
@@ -114,7 +149,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
             </main>
             
             {isContentPage && (
-              <FloatingInputBar onSubmitQuery={handleGlobalQuery} hidden={isResultsLoading} /> 
+              <FloatingInputBar onSubmitQuery={handleAppendQuery} hidden={isResultsLoading} /> 
             )}
           </div>
         </div>

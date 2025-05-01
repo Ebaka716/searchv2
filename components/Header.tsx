@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
@@ -20,10 +20,13 @@ import { Input } from '@/components/ui/input';
 
 interface HeaderProps {
   className?: string;
+  onSubmitQuery?: (query: string) => void;
+  resetSignal?: number;
+  onLogoClick?: () => void;
   [key: string]: unknown;
 }
 
-export function Header({ className, ...props }: HeaderProps) {
+export function Header({ className, onSubmitQuery, resetSignal, onLogoClick, ...props }: HeaderProps) {
   const pathname = usePathname();
   const router = useRouter();
   const [headerInput, setHeaderInput] = useState("");
@@ -35,6 +38,10 @@ export function Header({ className, ...props }: HeaderProps) {
 
   // Only allow valid DOM props to be spread
   const { toggleMobileMenu, ...restProps } = props; // eslint-disable-line @typescript-eslint/no-unused-vars
+
+  useEffect(() => {
+    setHeaderInput("");
+  }, [resetSignal]);
 
   return (
     <header
@@ -49,7 +56,7 @@ export function Header({ className, ...props }: HeaderProps) {
         {/* Logo */}
         <div className="flex items-center gap-2 font-semibold">
           <CircleUser className="h-6 w-6 text-blue-500" />
-          <Link href="/" className="text-blue-500 font-bold text-xl hover:underline">Product company</Link>
+          <Link href="/" className="text-blue-500 font-bold text-xl hover:underline" onClick={onLogoClick}>Product company</Link>
         </div>
         {/* Utility Navigation */}
         <nav className="flex items-center gap-4 text-sm text-muted-foreground">
@@ -102,7 +109,11 @@ export function Header({ className, ...props }: HeaderProps) {
               onChange={e => setHeaderInput(e.target.value)}
               onKeyDown={e => {
                 if (e.key === "Enter" && headerInput.trim()) {
-                  router.push(`/results?query=${encodeURIComponent(headerInput.trim())}`);
+                  if (onSubmitQuery) {
+                    onSubmitQuery(headerInput);
+                  } else {
+                    router.push(`/results?query=${encodeURIComponent(headerInput.trim())}`);
+                  }
                 }
               }}
               className="pl-8 pr-10 h-9 border border-gray-200 focus:border-gray-400"
