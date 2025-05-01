@@ -7,3 +7,4 @@
 - API routes for backend logic
 - Tailwind CSS for styling
 - Markdown-based memory bank for documentation 
+- Pattern: Prefer local state for results history to avoid context/provider complexity unless robust cross-component communication is required 
