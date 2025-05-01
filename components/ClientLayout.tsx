@@ -5,7 +5,7 @@ import { Sidebar } from '@/components/Sidebar';
 import { cn } from '@/lib/utils';
 import { usePathname } from 'next/navigation';
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { Header } from '@/components/Header';
+import { HomeHeader } from '@/components/HomeHeader';
 import { FloatingInputBar } from '@/components/FloatingInputBar';
 import { ConfidenceProvider } from '@/context/ConfidenceContext';
 
@@ -43,9 +43,9 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
   return (
     <TooltipProvider>
       <ConfidenceProvider>
-        <Header toggleMobileMenu={toggleMobileMenu} />
+        <HomeHeader />
         
-        <div className={cn("flex h-screen pt-16")}>
+        <div className={cn("flex h-screen")}>
           <Sidebar 
             isDesktopCollapsed={isDesktopCollapsed} 
             toggleDesktopSidebar={toggleDesktopSidebar} 
@@ -57,6 +57,7 @@ export function ClientLayout({ children }: { children: React.ReactNode }) {
             className={cn(
               "flex-1",
               backgroundClass,
+              "pt-[6.5rem]",
               isDesktopCollapsed ? "md:ml-16" : "md:ml-52",
               pathname === '/' 
                 ? "flex flex-col items-center justify-center overflow-hidden"
