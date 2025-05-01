@@ -3,7 +3,6 @@
 import React from "react";
 import { Atom } from "lucide-react";
 import { FinancialSearchCommand } from "@/components/search/FinancialSearchCommand";
-import { Button } from "@/components/ui/button";
 
 export default function AssistantPage() {
   // Helper function for navigation (similar to the one in FinancialSearchCommand)

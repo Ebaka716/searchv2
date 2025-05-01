@@ -5,6 +5,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import { Slider } from "@/components/ui/slider";
 import { Label } from "@/components/ui/label";
 import { Search, Sparkles, CircleUser } from 'lucide-react';
+import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { useConfidence } from '@/context/ConfidenceContext';
 import {
@@ -48,7 +49,7 @@ export function Header({ className, ...props }: HeaderProps) {
         {/* Logo */}
         <div className="flex items-center gap-2 font-semibold">
           <CircleUser className="h-6 w-6 text-blue-500" />
-          <a href="/" className="text-blue-500 font-bold text-xl hover:underline">Product company</a>
+          <Link href="/" className="text-blue-500 font-bold text-xl hover:underline">Product company</Link>
         </div>
         {/* Utility Navigation */}
         <nav className="flex items-center gap-4 text-sm text-muted-foreground">
