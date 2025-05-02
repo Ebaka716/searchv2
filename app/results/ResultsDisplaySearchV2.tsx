@@ -201,6 +201,9 @@ export default function ResultsDisplaySearchV2({ history, setHistory, onLoading 
                 <DividendsCardShadcn />
                 <EarningsCardShadcn />
                 <ClassicSearchResultsList maxItems={7} context="dividends" />
+                <div className="mt-4 p-4 rounded-lg bg-blue-50 text-blue-900 text-sm border border-blue-200">
+                  <strong>Tip:</strong> Try typing <span className="font-mono bg-blue-100 px-1 rounded">dividends from the last month</span> in the search bar to see a detailed table of your recent dividends.
+                </div>
               </div>
             </>
           )}
