@@ -1,7 +1,8 @@
 import React from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { LineChart, Line, XAxis, YAxis, Tooltip, Legend, PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar } from "recharts";
+import { LineChart, Line, XAxis, YAxis, Tooltip as RechartsTooltip, Legend, PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar } from "recharts";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 const growthData = [
   { year: "2022", AAPL: 8, Market: 6 },
@@ -20,6 +21,36 @@ const payoutDataCurr = [
 ];
 const pieColors = ["#2563eb", "#e5e7eb"];
 
+// Helper to render stat row with plus-bubble
+function StatRowPlusBubble({ label, value, sublabel }: { label: string; value: string; sublabel?: string }) {
+  return (
+    <div className="relative group">
+      <div className="font-semibold group-hover:underline cursor-pointer flex flex-col">
+        {label}<br/>
+        {sublabel && <span className="font-normal text-muted-foreground">{sublabel}</span>}
+        <span className="font-bold">{value}</span>
+      </div>
+      <Tooltip delayDuration={0}>
+        <TooltipTrigger asChild>
+          <button
+            type="button"
+            className="absolute top-0 right-0 mt-[-10px] mr-[-10px] hidden group-hover:flex items-center justify-center w-6 h-6 rounded-full bg-teal-600 text-white shadow-lg z-10 transition-all duration-150 hover:bg-teal-700"
+            onClick={() => {
+              window.dispatchEvent(new CustomEvent('add-to-floating-input', { detail: { value: `${label}: ${value}` } }));
+            }}
+            aria-label={`Add ${label} to input bar`}
+          >
+            <span className="text-lg leading-none font-bold">+</span>
+          </button>
+        </TooltipTrigger>
+        <TooltipContent side="top" className="bg-black text-white px-3 py-1.5 text-xs rounded-md">
+          Have a question?
+        </TooltipContent>
+      </Tooltip>
+    </div>
+  );
+}
+
 export function DividendsCardShadcn() {
   return (
     <Card className="rounded-xl border bg-card">
@@ -30,109 +61,12 @@ export function DividendsCardShadcn() {
       <CardContent className="pt-0">
         {/* Stat Row */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-x-4 gap-y-2 text-xs border-b pb-3 mb-3 w-full">
-          {/* Dividend Amount */}
-          <div className="relative group">
-            <div className="font-semibold group-hover:underline cursor-pointer flex flex-col">
-              Dividend Amount<br/>
-              <span className="font-normal text-muted-foreground">(MOST RECENT)</span>
-              <span className="font-bold">$0.2500</span>
-            </div>
-            <button
-              type="button"
-              className="absolute top-0 right-0 mt-[-10px] mr-[-10px] hidden group-hover:flex items-center justify-center w-6 h-6 rounded-full bg-teal-600 text-white shadow-lg z-10 transition-all duration-150 hover:bg-teal-700"
-              onClick={() => {
-                window.dispatchEvent(new CustomEvent('add-to-floating-input', { detail: { value: '$0.2500' } }));
-              }}
-              aria-label="Add Dividend Amount to input bar"
-            >
-              <span className="text-lg leading-none font-bold">+</span>
-            </button>
-          </div>
-          {/* Announcement Date */}
-          <div className="relative group">
-            <div className="font-semibold group-hover:underline cursor-pointer flex flex-col">
-              Announcement Date
-              <span>01/30/2025</span>
-            </div>
-            <button
-              type="button"
-              className="absolute top-0 right-0 mt-[-10px] mr-[-10px] hidden group-hover:flex items-center justify-center w-6 h-6 rounded-full bg-teal-600 text-white shadow-lg z-10 transition-all duration-150 hover:bg-teal-700"
-              onClick={() => {
-                window.dispatchEvent(new CustomEvent('add-to-floating-input', { detail: { value: '01/30/2025' } }));
-              }}
-              aria-label="Add Announcement Date to input bar"
-            >
-              <span className="text-lg leading-none font-bold">+</span>
-            </button>
-          </div>
-          {/* Ex-Div Date */}
-          <div className="relative group">
-            <div className="font-semibold group-hover:underline cursor-pointer flex flex-col">
-              Ex-Div Date
-              <span>02/10/2025</span>
-            </div>
-            <button
-              type="button"
-              className="absolute top-0 right-0 mt-[-10px] mr-[-10px] hidden group-hover:flex items-center justify-center w-6 h-6 rounded-full bg-teal-600 text-white shadow-lg z-10 transition-all duration-150 hover:bg-teal-700"
-              onClick={() => {
-                window.dispatchEvent(new CustomEvent('add-to-floating-input', { detail: { value: '02/10/2025' } }));
-              }}
-              aria-label="Add Ex-Div Date to input bar"
-            >
-              <span className="text-lg leading-none font-bold">+</span>
-            </button>
-          </div>
-          {/* Record Date */}
-          <div className="relative group">
-            <div className="font-semibold group-hover:underline cursor-pointer flex flex-col">
-              Record Date
-              <span>02/10/2025</span>
-            </div>
-            <button
-              type="button"
-              className="absolute top-0 right-0 mt-[-10px] mr-[-10px] hidden group-hover:flex items-center justify-center w-6 h-6 rounded-full bg-teal-600 text-white shadow-lg z-10 transition-all duration-150 hover:bg-teal-700"
-              onClick={() => {
-                window.dispatchEvent(new CustomEvent('add-to-floating-input', { detail: { value: '02/10/2025' } }));
-              }}
-              aria-label="Add Record Date to input bar"
-            >
-              <span className="text-lg leading-none font-bold">+</span>
-            </button>
-          </div>
-          {/* Pay Date */}
-          <div className="relative group">
-            <div className="font-semibold group-hover:underline cursor-pointer flex flex-col">
-              Pay Date
-              <span>02/13/2025</span>
-            </div>
-            <button
-              type="button"
-              className="absolute top-0 right-0 mt-[-10px] mr-[-10px] hidden group-hover:flex items-center justify-center w-6 h-6 rounded-full bg-teal-600 text-white shadow-lg z-10 transition-all duration-150 hover:bg-teal-700"
-              onClick={() => {
-                window.dispatchEvent(new CustomEvent('add-to-floating-input', { detail: { value: '02/13/2025' } }));
-              }}
-              aria-label="Add Pay Date to input bar"
-            >
-              <span className="text-lg leading-none font-bold">+</span>
-            </button>
-          </div>
-          {/* Dividend Frequency */}
-          <div className="relative group">
-            <div className="font-semibold group-hover:underline cursor-pointer flex flex-col">
-              Dividend Frequency
-              <span>Quarterly</span>
-            </div>
-            <button
-              type="button"
-              className="absolute top-0 right-0 mt-[-10px] mr-[-10px] hidden group-hover:flex items-center justify-center w-6 h-6 rounded-full bg-teal-600 text-white shadow-lg z-10 transition-all duration-150 hover:bg-teal-700"
-              onClick={() => {
-                window.dispatchEvent(new CustomEvent('add-to-floating-input', { detail: { value: 'Quarterly' } }));
-              }}
-              aria-label="Add Dividend Frequency to input bar"
-            >
-              <span className="text-lg leading-none font-bold">+</span>
-            </button>
-          </div>
+          {StatRowPlusBubble({ label: "Dividend Amount", value: "$0.2500", sublabel: "(MOST RECENT)" })}
+          {StatRowPlusBubble({ label: "Announcement Date", value: "01/30/2025" })}
+          {StatRowPlusBubble({ label: "Ex-Div Date", value: "02/10/2025" })}
+          {StatRowPlusBubble({ label: "Record Date", value: "02/10/2025" })}
+          {StatRowPlusBubble({ label: "Pay Date", value: "02/13/2025" })}
+          {StatRowPlusBubble({ label: "Dividend Frequency", value: "Quarterly" })}
         </div>
         {/* Three Columns */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -150,7 +84,7 @@ export function DividendsCardShadcn() {
                   <XAxis type="number" domain={[0, 3.5]} hide />
                   <YAxis type="category" dataKey="name" hide />
                   <Bar dataKey="value" fill="#2563eb" radius={[4, 4, 4, 4]} barSize={12} />
-                  <Tooltip formatter={(v) => `${v}%`} />
+                  <RechartsTooltip formatter={(v) => `${v}%`} />
                 </BarChart>
               </ResponsiveContainer>
               <div className="flex justify-between w-full text-xs">
@@ -165,7 +99,7 @@ export function DividendsCardShadcn() {
                   <XAxis type="number" domain={[0, 3.5]} hide />
                   <YAxis type="category" dataKey="name" hide />
                   <Bar dataKey="value" fill="#a3a3a3" radius={[4, 4, 4, 4]} barSize={12} />
-                  <Tooltip formatter={(v) => `${v}%`} />
+                  <RechartsTooltip formatter={(v) => `${v}%`} />
                 </BarChart>
               </ResponsiveContainer>
               <div className="flex justify-between w-full text-xs">
@@ -214,7 +148,7 @@ export function DividendsCardShadcn() {
               <LineChart data={growthData} margin={{ left: 0, right: 0, top: 10, bottom: 0 }}>
                 <XAxis dataKey="year" axisLine={false} tickLine={false} tick={{ fontSize: 14, fontWeight: 700, fill: '#222' }} />
                 <YAxis domain={[0, 8]} ticks={[8, 6, 4, 2, 0]} tickFormatter={(v) => `${v}%`} axisLine={false} tickLine={false} tick={{ fontSize: 14, fontWeight: 700, fill: '#222' }} />
-                <Tooltip formatter={(v) => `${v}%`} />
+                <RechartsTooltip formatter={(v) => `${v}%`} />
                 <Legend verticalAlign="top" align="left" height={32} iconType="circle" wrapperStyle={{ fontSize: 12, fontWeight: 500 }} />
                 <Line type="monotone" dataKey="AAPL" stroke="#2563eb" strokeWidth={3} dot={{ r: 4, fill: '#2563eb', stroke: '#fff', strokeWidth: 2 }} name="AAPL" />
                 <Line type="monotone" dataKey="Market" stroke="#d1d5db" strokeWidth={3} dot={{ r: 4, fill: '#d1d5db', stroke: '#fff', strokeWidth: 2 }} name="Market Median" />
@@ -225,9 +159,20 @@ export function DividendsCardShadcn() {
         </div>
       </CardContent>
       <div className="flex flex-row gap-3 px-6 pb-4 pt-2">
-        <Button variant="conversational">Dividend History</Button>
-        <Button variant="conversational">Payout Ratio</Button>
-        <Button variant="conversational">Compare Peers</Button>
+        {["Dividend History", "Payout Ratio", "Compare Peers"].map((label) => (
+          <Button
+            key={label}
+            variant="conversational"
+            onClick={() => {
+              window.dispatchEvent(
+                new CustomEvent('add-to-floating-input', { detail: { value: label } })
+              );
+            }}
+            className="transition-all duration-200"
+          >
+            {label}
+          </Button>
+        ))}
       </div>
     </Card>
   );
