@@ -73,6 +73,11 @@ export function EarningsCardShadcn() {
           </Table>
         </div>
       </CardContent>
+      <div className="flex flex-row gap-3 px-6 pb-4 pt-2">
+        <Button variant="conversational">Earnings History</Button>
+        <Button variant="conversational">EPS Trend</Button>
+        <Button variant="conversational">Analyst Estimates</Button>
+      </div>
     </Card>
   );
 } 

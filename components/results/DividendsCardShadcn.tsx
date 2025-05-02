@@ -127,6 +127,11 @@ export function DividendsCardShadcn() {
           </div>
         </div>
       </CardContent>
+      <div className="flex flex-row gap-3 px-6 pb-4 pt-2">
+        <Button variant="conversational">Dividend History</Button>
+        <Button variant="conversational">Payout Ratio</Button>
+        <Button variant="conversational">Compare Peers</Button>
+      </div>
     </Card>
   );
 } 
