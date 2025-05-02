@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Input } from "@/components/ui/input";
 import { Button } from '@/components/ui/button';
@@ -45,6 +45,19 @@ export function FloatingInputBar({ onSpecialQuery, onSubmitQuery, hidden }: Floa
   const [isFocused, setIsFocused] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+
+  useEffect(() => {
+    function handleAddToFloatingInput(e: CustomEvent) {
+      if (typeof e.detail?.value === 'string') {
+        setInputValue(e.detail.value);
+      }
+    }
+    window.addEventListener('add-to-floating-input', handleAddToFloatingInput as EventListener);
+    return () => {
+      window.removeEventListener('add-to-floating-input', handleAddToFloatingInput as EventListener);
+    };
+  }, []);
+
   if (hidden) return null;
 
   // --- Helper function to get icon based on MIME type ---

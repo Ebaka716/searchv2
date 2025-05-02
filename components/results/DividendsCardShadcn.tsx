@@ -30,12 +30,109 @@ export function DividendsCardShadcn() {
       <CardContent className="pt-0">
         {/* Stat Row */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-x-4 gap-y-2 text-xs border-b pb-3 mb-3 w-full">
-          <div><div className="font-semibold">Dividend Amount<br/><span className="font-normal text-muted-foreground">(MOST RECENT)</span></div><div>$0.2500</div></div>
-          <div><div className="font-semibold">Announcement Date</div><div>01/30/2025</div></div>
-          <div><div className="font-semibold">Ex-Div Date</div><div>02/10/2025</div></div>
-          <div><div className="font-semibold">Record Date</div><div>02/10/2025</div></div>
-          <div><div className="font-semibold">Pay Date</div><div>02/13/2025</div></div>
-          <div><div className="font-semibold">Dividend Frequency</div><div>Quarterly</div></div>
+          {/* Dividend Amount */}
+          <div className="relative group">
+            <div className="font-semibold group-hover:underline cursor-pointer flex flex-col">
+              Dividend Amount<br/>
+              <span className="font-normal text-muted-foreground">(MOST RECENT)</span>
+              <span className="font-bold">$0.2500</span>
+            </div>
+            <button
+              type="button"
+              className="absolute top-0 right-0 mt-[-10px] mr-[-10px] hidden group-hover:flex items-center justify-center w-6 h-6 rounded-full bg-teal-600 text-white shadow-lg z-10 transition-all duration-150 hover:bg-teal-700"
+              onClick={() => {
+                window.dispatchEvent(new CustomEvent('add-to-floating-input', { detail: { value: '$0.2500' } }));
+              }}
+              aria-label="Add Dividend Amount to input bar"
+            >
+              <span className="text-lg leading-none font-bold">+</span>
+            </button>
+          </div>
+          {/* Announcement Date */}
+          <div className="relative group">
+            <div className="font-semibold group-hover:underline cursor-pointer flex flex-col">
+              Announcement Date
+              <span>01/30/2025</span>
+            </div>
+            <button
+              type="button"
+              className="absolute top-0 right-0 mt-[-10px] mr-[-10px] hidden group-hover:flex items-center justify-center w-6 h-6 rounded-full bg-teal-600 text-white shadow-lg z-10 transition-all duration-150 hover:bg-teal-700"
+              onClick={() => {
+                window.dispatchEvent(new CustomEvent('add-to-floating-input', { detail: { value: '01/30/2025' } }));
+              }}
+              aria-label="Add Announcement Date to input bar"
+            >
+              <span className="text-lg leading-none font-bold">+</span>
+            </button>
+          </div>
+          {/* Ex-Div Date */}
+          <div className="relative group">
+            <div className="font-semibold group-hover:underline cursor-pointer flex flex-col">
+              Ex-Div Date
+              <span>02/10/2025</span>
+            </div>
+            <button
+              type="button"
+              className="absolute top-0 right-0 mt-[-10px] mr-[-10px] hidden group-hover:flex items-center justify-center w-6 h-6 rounded-full bg-teal-600 text-white shadow-lg z-10 transition-all duration-150 hover:bg-teal-700"
+              onClick={() => {
+                window.dispatchEvent(new CustomEvent('add-to-floating-input', { detail: { value: '02/10/2025' } }));
+              }}
+              aria-label="Add Ex-Div Date to input bar"
+            >
+              <span className="text-lg leading-none font-bold">+</span>
+            </button>
+          </div>
+          {/* Record Date */}
+          <div className="relative group">
+            <div className="font-semibold group-hover:underline cursor-pointer flex flex-col">
+              Record Date
+              <span>02/10/2025</span>
+            </div>
+            <button
+              type="button"
+              className="absolute top-0 right-0 mt-[-10px] mr-[-10px] hidden group-hover:flex items-center justify-center w-6 h-6 rounded-full bg-teal-600 text-white shadow-lg z-10 transition-all duration-150 hover:bg-teal-700"
+              onClick={() => {
+                window.dispatchEvent(new CustomEvent('add-to-floating-input', { detail: { value: '02/10/2025' } }));
+              }}
+              aria-label="Add Record Date to input bar"
+            >
+              <span className="text-lg leading-none font-bold">+</span>
+            </button>
+          </div>
+          {/* Pay Date */}
+          <div className="relative group">
+            <div className="font-semibold group-hover:underline cursor-pointer flex flex-col">
+              Pay Date
+              <span>02/13/2025</span>
+            </div>
+            <button
+              type="button"
+              className="absolute top-0 right-0 mt-[-10px] mr-[-10px] hidden group-hover:flex items-center justify-center w-6 h-6 rounded-full bg-teal-600 text-white shadow-lg z-10 transition-all duration-150 hover:bg-teal-700"
+              onClick={() => {
+                window.dispatchEvent(new CustomEvent('add-to-floating-input', { detail: { value: '02/13/2025' } }));
+              }}
+              aria-label="Add Pay Date to input bar"
+            >
+              <span className="text-lg leading-none font-bold">+</span>
+            </button>
+          </div>
+          {/* Dividend Frequency */}
+          <div className="relative group">
+            <div className="font-semibold group-hover:underline cursor-pointer flex flex-col">
+              Dividend Frequency
+              <span>Quarterly</span>
+            </div>
+            <button
+              type="button"
+              className="absolute top-0 right-0 mt-[-10px] mr-[-10px] hidden group-hover:flex items-center justify-center w-6 h-6 rounded-full bg-teal-600 text-white shadow-lg z-10 transition-all duration-150 hover:bg-teal-700"
+              onClick={() => {
+                window.dispatchEvent(new CustomEvent('add-to-floating-input', { detail: { value: 'Quarterly' } }));
+              }}
+              aria-label="Add Dividend Frequency to input bar"
+            >
+              <span className="text-lg leading-none font-bold">+</span>
+            </button>
+          </div>
         </div>
         {/* Three Columns */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
